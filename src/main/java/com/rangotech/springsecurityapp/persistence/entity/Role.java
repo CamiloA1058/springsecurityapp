@@ -1,5 +1,5 @@
 package com.rangotech.springsecurityapp.persistence.entity;
 
-public enum Rol {
+public enum Role {
     USER, ADMIN
 }

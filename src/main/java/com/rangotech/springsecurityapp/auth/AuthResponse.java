@@ -1,4 +1,4 @@
-package com.rangotech.springsecurityapp.Auth;
+package com.rangotech.springsecurityapp.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,9 @@
 package com.rangotech.springsecurityapp.persistence.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,25 +19,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "users")
 public class User implements UserDetails {
+
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     private String phone;
     private LocalDateTime createdDate;
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Role role;
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+    @Email
     @Column(nullable = false)
+    @NotBlank
     private String username;
     private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(rol.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

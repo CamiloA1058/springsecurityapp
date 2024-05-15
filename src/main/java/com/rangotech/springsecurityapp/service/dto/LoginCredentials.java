@@ -1,6 +1,6 @@
 package com.rangotech.springsecurityapp.service.dto;
 
-public record UserLoginDto(
+public record LoginCredentials(
         String username,
         String password) {
 }

@@ -1,8 +1,8 @@
-package com.rangotech.springsecurityapp.Auth;
+package com.rangotech.springsecurityapp.auth;
 
-import com.rangotech.springsecurityapp.persistence.entity.User;
-import com.rangotech.springsecurityapp.service.dto.UserLoginDto;
+import com.rangotech.springsecurityapp.service.dto.LoginCredentials;
 import com.rangotech.springsecurityapp.service.dto.UserRegisterDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +18,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDto user){
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginCredentials user){
         return ResponseEntity.ok(authService.login(user));
     }
     @PostMapping("register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRegisterDto user){
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegisterDto user){
         return ResponseEntity.ok(authService.register(user));
     }
 }

@@ -1,8 +1,8 @@
 package com.rangotech.springsecurityapp.service.dto;
 
 public record UserRegisterDto(
-        String firstname,
-        String lastname,
+        Long id,
+        String name,
         String phone,
         String username,
         String password) {

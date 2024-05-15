@@ -1,10 +1,10 @@
-package com.rangotech.springsecurityapp.Auth;
+package com.rangotech.springsecurityapp.auth;
 
 import com.rangotech.springsecurityapp.config.Jwt.JwtService;
-import com.rangotech.springsecurityapp.mapper.UserMapper;
+import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
 import com.rangotech.springsecurityapp.persistence.entity.User;
-import com.rangotech.springsecurityapp.service.UserService;
-import com.rangotech.springsecurityapp.service.dto.UserLoginDto;
+import com.rangotech.springsecurityapp.service.impl.UserService;
+import com.rangotech.springsecurityapp.service.dto.LoginCredentials;
 import com.rangotech.springsecurityapp.service.dto.UserRegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,11 +21,11 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper;
+    private final UserRegisterMapper userRegisterMapper;
 
-    public AuthResponse login(UserLoginDto userLoginDto){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.username(), userLoginDto.password()));
-        UserDetails user = userDetailsService.loadUserByUsername(userLoginDto.username());
+    public AuthResponse login(LoginCredentials loginCredentials){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginCredentials.username(), loginCredentials.password()));
+        UserDetails user = userDetailsService.loadUserByUsername(loginCredentials.username());
 
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwtToken(jwtService.generateToken(user));
@@ -33,9 +33,10 @@ public class AuthService {
     }
 
     public AuthResponse register(UserRegisterDto userRegisterDto){
-        User user = userService.create(userRegisterDto);
+        User user = userRegisterMapper.map(userRegisterDto);
+        User userSaved = userService.save(user);
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setJwtToken(jwtService.generateToken(user));
+        authResponse.setJwtToken(jwtService.generateToken(userSaved));
         return authResponse;
     }
 }
