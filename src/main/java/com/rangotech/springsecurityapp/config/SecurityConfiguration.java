@@ -25,12 +25,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         AntPathRequestMatcher patterns = new AntPathRequestMatcher("/auth/**");
-        AntPathRequestMatcher patterns2 = new AntPathRequestMatcher("/h2-console/**");
 
         http
             .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpz -> {
-                   httpz.requestMatchers(patterns,patterns2)
+                   httpz.requestMatchers(patterns)
                            .permitAll()
                            .anyRequest()
                            .authenticated();

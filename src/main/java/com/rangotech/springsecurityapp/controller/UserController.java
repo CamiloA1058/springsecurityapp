@@ -1,6 +1,5 @@
 package com.rangotech.springsecurityapp.controller;
 
-import com.rangotech.springsecurityapp.persistence.entity.User;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
 import com.rangotech.springsecurityapp.service.IUserService;
 import com.rangotech.springsecurityapp.service.dto.UserDto;

@@ -24,8 +24,11 @@ public class User implements UserDetails {
 
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue
     private Long id;
+    @Size(min = 5, max = 20, message = "El nombre debe estar contenido entre 5 y 20 caracteres de longitud")
     private String name;
+    @Size(min = 10, max = 10, message = "El numero de telefono debe contener exactamente 10 caracteres")
     private String phone;
     private LocalDateTime createdDate;
     @Enumerated(EnumType.STRING)
@@ -33,7 +36,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
     @Email
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     @NotBlank
     private String username;
     private String password;

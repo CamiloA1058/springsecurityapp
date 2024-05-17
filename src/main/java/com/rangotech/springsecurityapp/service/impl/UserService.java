@@ -1,6 +1,7 @@
 package com.rangotech.springsecurityapp.service.impl;
 
 
+import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
 import com.rangotech.springsecurityapp.exceptions.UserNotFoundException;
 import com.rangotech.springsecurityapp.mapper.UserDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
@@ -10,7 +11,6 @@ import com.rangotech.springsecurityapp.persistence.repository.UserRepository;
 import com.rangotech.springsecurityapp.service.IUserService;
 import com.rangotech.springsecurityapp.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +40,9 @@ public class UserService implements IUserService {
     }
     @Override
     public User save(User user){
+        if (userRepository.findByUsername(user.getUsername()).isPresent()){
+            throw new ResourceAlreadyExistException("El usuario ya se encuentra registrado");
+        };
         return userRepository.save(user);
     }
     @Transactional
@@ -57,8 +60,8 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return userDtoMapper.map(user.orElseThrow(() -> new UserNotFoundException("The user with that id has not been found", HttpStatus.NOT_FOUND)));
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("El usuario no se encuentra")) ;
+        return userDtoMapper.map(user);
     }
 
     @Override

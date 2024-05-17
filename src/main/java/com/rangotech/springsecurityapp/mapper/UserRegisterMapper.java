@@ -18,7 +18,6 @@ public class UserRegisterMapper implements IMapper<UserRegisterDto, User>{
     @Override
     public User map(UserRegisterDto in) {
         User user = new User();
-        user.setId(in.id());
         user.setName(in.name());
         user.setUsername(in.username());
         user.setPassword(passwordEncoder.encode(in.password()));
