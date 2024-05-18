@@ -3,6 +3,7 @@ package com.rangotech.springsecurityapp.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -29,10 +30,14 @@ public class User implements UserDetails {
     @Size(min = 5, max = 20, message = "El nombre debe estar contenido entre 5 y 20 caracteres de longitud")
     private String name;
     @Size(min = 10, max = 10, message = "El numero de telefono debe contener exactamente 10 caracteres")
+
+    @Pattern(regexp = "\\d{10}$")
     private String phone;
     private LocalDateTime createdDate;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    /*Los roles no se pueden repetir*/
+    private Set<Role> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
     @Email
@@ -43,7 +48,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+
+        return roles.stream().map(
+                role -> new SimpleGrantedAuthority(role.getRole())
+        ).collect(Collectors.toList());
     }
 
     @Override

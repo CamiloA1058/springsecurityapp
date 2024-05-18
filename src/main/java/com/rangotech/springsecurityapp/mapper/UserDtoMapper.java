@@ -12,7 +12,7 @@ public class UserDtoMapper implements IMapper<User, UserDto>{
                 in.getId(),
                 in.getName(),
                 in.getPhone(),
-                in.getRole(),
+                in.getRoles(),
                 in.getUsername(),
                 in.getUserStatus(),
                 in.getCreatedDate()

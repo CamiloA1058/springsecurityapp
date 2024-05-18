@@ -15,29 +15,29 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
-    @GetMapping("/users")
+    @GetMapping("admin/users")
     public List<UserDto> findAll(){
         return userService.findAll();
     }
 
-    @GetMapping("/users/userStatus/{userStatus}")
+    @GetMapping("admin/users/userStatus/{userStatus}")
     public List<UserDto> findAllByUserStatus(@PathVariable UserStatus userStatus){
         return userService.findAllByUserStatus(userStatus);
     }
-    @GetMapping("/users/{name}")
+    @GetMapping("admin/users/{name}")
     public List<UserDto> findAllByName(@PathVariable String name){
         return userService.findAllByName(name);
     }
-    @GetMapping("/users/id/{id}")
+    @GetMapping("admin/users/id/{id}")
     public UserDto findById(@PathVariable Long id){
         return userService.findById(id);
     }
-    @PatchMapping("/users/{userStatus}/{id}")
+    @PatchMapping("admin/users/{userStatus}/{id}")
     public ResponseEntity<Void> changeUserStatus(@PathVariable UserStatus userStatus, @PathVariable Long id){
         userService.changeUserStatus(userStatus, id);
         return ResponseEntity.noContent().build();
     };
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("admin/users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.noContent().build();

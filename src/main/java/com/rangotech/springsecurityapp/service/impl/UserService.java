@@ -5,8 +5,10 @@ import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
 import com.rangotech.springsecurityapp.exceptions.UserNotFoundException;
 import com.rangotech.springsecurityapp.mapper.UserDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
+import com.rangotech.springsecurityapp.persistence.entity.Role;
 import com.rangotech.springsecurityapp.persistence.entity.User;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
+import com.rangotech.springsecurityapp.persistence.repository.RoleRepository;
 import com.rangotech.springsecurityapp.persistence.repository.UserRepository;
 import com.rangotech.springsecurityapp.service.IUserService;
 import com.rangotech.springsecurityapp.service.dto.UserDto;
@@ -26,6 +28,7 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserRegisterMapper userRegisterMapper;
     private final UserDtoMapper userDtoMapper;
+    private final RoleRepository roleRepository;
 
     @Override
     public List<UserDto> findAll() {
@@ -43,6 +46,9 @@ public class UserService implements IUserService {
         if (userRepository.findByUsername(user.getUsername()).isPresent()){
             throw new ResourceAlreadyExistException("El usuario ya se encuentra registrado");
         };
+        Role role = roleRepository.findById(101L).orElseThrow();
+        user.getRoles().add(role);
+
         return userRepository.save(user);
     }
     @Transactional

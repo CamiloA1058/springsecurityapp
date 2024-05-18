@@ -23,7 +23,6 @@ public class UserRegisterMapper implements IMapper<UserRegisterDto, User>{
         user.setPassword(passwordEncoder.encode(in.password()));
         user.setPhone(in.phone());
         user.setCreatedDate(LocalDateTime.now());
-        user.setRole(Role.USER);
         user.setUserStatus(UserStatus.ACTIVE);
         return user;
     }

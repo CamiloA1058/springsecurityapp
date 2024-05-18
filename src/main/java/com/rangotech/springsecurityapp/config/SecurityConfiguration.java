@@ -11,7 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import static com.rangotech.springsecurityapp.util.AppConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -24,13 +25,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        AntPathRequestMatcher patterns = new AntPathRequestMatcher("/auth/**");
 
         http
             .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpz -> {
-                   httpz.requestMatchers(patterns)
-                           .permitAll()
+                   httpz.requestMatchers(publicRoutes).permitAll()
+                           .requestMatchers(adminRoutes).hasAuthority("ADMIN")
+                           .requestMatchers(userRoutes).hasAnyAuthority("USER", "ADMIN")
                            .anyRequest()
                            .authenticated();
                 })
