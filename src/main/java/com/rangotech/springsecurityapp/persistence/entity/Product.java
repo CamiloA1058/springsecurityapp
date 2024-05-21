@@ -15,12 +15,12 @@ public class Product {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long productId;
     @Column(nullable = false)
     private String productName;
     @Column(nullable = false)
     private String description;
-    private Float price;
-    private Integer stock;
+    private Double price;
+    private Integer quantity;
 
 }

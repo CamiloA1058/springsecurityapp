@@ -9,13 +9,14 @@ public class UserDtoMapper implements IMapper<User, UserDto>{
     @Override
     public UserDto map(User in) {
         return new UserDto(
-                in.getId(),
+                in.getUserId(),
                 in.getName(),
                 in.getPhone(),
                 in.getRoles(),
                 in.getUsername(),
                 in.getUserStatus(),
-                in.getCreatedDate()
+                in.getCreatedDate(),
+                in.getCart()
         );
     }
 }

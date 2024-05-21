@@ -15,6 +15,7 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
+
     @GetMapping("admin/users")
     public List<UserDto> findAll(){
         return userService.findAll();

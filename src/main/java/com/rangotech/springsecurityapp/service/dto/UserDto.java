@@ -1,5 +1,6 @@
 package com.rangotech.springsecurityapp.service.dto;
 
+import com.rangotech.springsecurityapp.persistence.entity.Cart;
 import com.rangotech.springsecurityapp.persistence.entity.Role;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
 
@@ -13,6 +14,7 @@ public record UserDto(
         Set<Role> roles,
         String username,
         UserStatus userStatus,
-        LocalDateTime createdDate
+        LocalDateTime createdDate,
+        Cart cart
         ) {
 }

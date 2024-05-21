@@ -5,6 +5,7 @@ import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
 import com.rangotech.springsecurityapp.exceptions.UserNotFoundException;
 import com.rangotech.springsecurityapp.mapper.UserDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
+import com.rangotech.springsecurityapp.persistence.entity.Cart;
 import com.rangotech.springsecurityapp.persistence.entity.Role;
 import com.rangotech.springsecurityapp.persistence.entity.User;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
-    private final UserRegisterMapper userRegisterMapper;
     private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
 
@@ -49,7 +48,14 @@ public class UserService implements IUserService {
         Role role = roleRepository.findById(101L).orElseThrow();
         user.getRoles().add(role);
 
-        return userRepository.save(user);
+        Cart cart = new Cart();
+        user.setCart(cart);
+
+        User userSaved = userRepository.save(user);
+
+        cart.setUser(userSaved);
+
+        return userSaved;
     }
     @Transactional
     @Override

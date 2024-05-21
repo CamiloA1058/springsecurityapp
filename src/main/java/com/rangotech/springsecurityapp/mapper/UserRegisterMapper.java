@@ -1,5 +1,6 @@
 package com.rangotech.springsecurityapp.mapper;
 
+import com.rangotech.springsecurityapp.persistence.entity.Cart;
 import com.rangotech.springsecurityapp.persistence.entity.Role;
 import com.rangotech.springsecurityapp.persistence.entity.User;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
