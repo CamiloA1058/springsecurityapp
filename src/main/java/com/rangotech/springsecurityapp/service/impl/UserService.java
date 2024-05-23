@@ -3,12 +3,14 @@ package com.rangotech.springsecurityapp.service.impl;
 
 import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
 import com.rangotech.springsecurityapp.exceptions.UserNotFoundException;
+import com.rangotech.springsecurityapp.mapper.CartDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
 import com.rangotech.springsecurityapp.persistence.entity.Cart;
 import com.rangotech.springsecurityapp.persistence.entity.Role;
 import com.rangotech.springsecurityapp.persistence.entity.User;
 import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
+import com.rangotech.springsecurityapp.persistence.repository.CartRepository;
 import com.rangotech.springsecurityapp.persistence.repository.RoleRepository;
 import com.rangotech.springsecurityapp.persistence.repository.UserRepository;
 import com.rangotech.springsecurityapp.service.IUserService;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +31,11 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
-
+    private final CartRepository cartRepository;
     @Override
     public List<UserDto> findAll() {
-        return userRepository.findAll().stream().map(userDtoMapper::map
-        ).collect(Collectors.toList());
+       return userRepository.findAll().stream().map(userDtoMapper::map)
+               .collect(Collectors.toList());
     }
 
     @Override
@@ -49,13 +52,11 @@ public class UserService implements IUserService {
         user.getRoles().add(role);
 
         Cart cart = new Cart();
-        user.setCart(cart);
+        cart.setUser(user);
 
-        User userSaved = userRepository.save(user);
+        cartRepository.save(cart);
 
-        cart.setUser(userSaved);
-
-        return userSaved;
+        return userRepository.save(user);
     }
     @Transactional
     @Override

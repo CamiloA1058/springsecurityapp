@@ -1,5 +1,6 @@
 package com.rangotech.springsecurityapp.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,7 +35,7 @@ public class User implements UserDetails {
     @Pattern(regexp = "\\d{10}$")
     private String phone;
     private LocalDateTime createdDate;
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     /*Los roles no se pueden repetir*/
     private Set<Role> roles = new HashSet<>();
@@ -45,7 +46,8 @@ public class User implements UserDetails {
     @NotBlank
     private String username;
     private String password;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnore
     private Cart cart;
 
     @Override

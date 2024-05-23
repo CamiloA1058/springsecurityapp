@@ -11,34 +11,34 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/admin")
 public class UserController {
 
     private final IUserService userService;
 
-    @GetMapping("admin/users")
+    @GetMapping("users")
     public List<UserDto> findAll(){
         return userService.findAll();
     }
 
-    @GetMapping("admin/users/userStatus/{userStatus}")
+    @GetMapping("users/userStatus/{userStatus}")
     public List<UserDto> findAllByUserStatus(@PathVariable UserStatus userStatus){
         return userService.findAllByUserStatus(userStatus);
     }
-    @GetMapping("admin/users/{name}")
+    @GetMapping("users/{name}")
     public List<UserDto> findAllByName(@PathVariable String name){
         return userService.findAllByName(name);
     }
-    @GetMapping("admin/users/id/{id}")
+    @GetMapping("users/id/{id}")
     public UserDto findById(@PathVariable Long id){
         return userService.findById(id);
     }
-    @PatchMapping("admin/users/{userStatus}/{id}")
+    @PatchMapping("users/{userStatus}/{id}")
     public ResponseEntity<Void> changeUserStatus(@PathVariable UserStatus userStatus, @PathVariable Long id){
         userService.changeUserStatus(userStatus, id);
         return ResponseEntity.noContent().build();
     };
-    @DeleteMapping("admin/users/{id}")
+    @DeleteMapping("users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
         userService.deleteById(id);
         return ResponseEntity.noContent().build();

@@ -1,17 +1,18 @@
 package com.rangotech.springsecurityapp.service;
 
 import com.rangotech.springsecurityapp.persistence.entity.Product;
+import com.rangotech.springsecurityapp.service.dto.ProductDto;
 
 import java.util.List;
 
 public interface IProductService{
-    List<Product> findAll();
+    List<ProductDto> findAll();
 
-    Product findById(Long id);
+    ProductDto findById(Long id);
 
     void deleteById(Long id);
 
-    Product save(Product product);
+    ProductDto save(Product product, Long categoryId);
 
-    List<Product> searchByCategory();
+    List<ProductDto> findByCategory();
 }
