@@ -38,7 +38,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id) { // Por implementar
 
     }
 
@@ -59,7 +59,32 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDto> findByCategory() {
-        return null;
+    public List<ProductDto> findByNameLike(String productName) {
+        return productRepository
+                .findByNameLike(productName)
+                .stream()
+                .map(productDtoMapper::map)
+                .toList();
+    }
+
+    @Override
+    public List<ProductDto> findByCategory(Long categoryId) {
+
+        Category category = categoryService.findById(categoryId);
+
+        return productRepository.findByCategory(categoryId)
+                .stream().map(productDtoMapper::map)
+                .toList();
+    }
+
+    @Override
+    public ProductDto update(Product product) { // Se necesita agregar mas funcionalidad
+        Product productFromDB = productRepository
+                .findById(product.getProductId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("El producto al que desea actualizar no se encuentra en nuesta base de datos"));
+        Product updatedProduct = productRepository.save(product);
+
+        return productDtoMapper.map(updatedProduct);
     }
 }

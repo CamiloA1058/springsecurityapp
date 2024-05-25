@@ -13,5 +13,5 @@ public interface IUserService {
     void deleteById(Long id);
     List<UserDto> findAllByUserStatus(UserStatus userStatus);
     void changeUserStatus(UserStatus userStatus, Long id);
-    List<UserDto> findAllByName(String name);
+    List<UserDto> findByNameLike(String name);
 }

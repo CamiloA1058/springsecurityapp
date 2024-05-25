@@ -13,6 +13,8 @@ public interface IProductService{
     void deleteById(Long id);
 
     ProductDto save(Product product, Long categoryId);
+    List<ProductDto> findByNameLike(String productName);
 
-    List<ProductDto> findByCategory();
+    List<ProductDto> findByCategory(Long categoryId);
+    ProductDto update(Product product);
 }

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -52,11 +52,13 @@ public class UserService implements IUserService {
         user.getRoles().add(role);
 
         Cart cart = new Cart();
-        cart.setUser(user);
+        user.setCart(cart);
 
-        cartRepository.save(cart);
+        User savedUser = userRepository.save(user);
 
-        return userRepository.save(user);
+        cart.setUser(savedUser);
+
+        return savedUser;
     }
     @Transactional
     @Override
@@ -66,8 +68,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserDto> findAllByName(String name) {
-        return  userRepository.findAllByName(name).stream().map(userDtoMapper::map
+    public List<UserDto> findByNameLike(String name) {
+        return  userRepository.findByNameLike(name).stream().map(userDtoMapper::map
         ).collect(Collectors.toList());
     }
 

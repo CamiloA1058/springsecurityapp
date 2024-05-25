@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @NotBlank
     private String username;
     private String password;
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private Cart cart;
 

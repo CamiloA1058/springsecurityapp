@@ -26,8 +26,8 @@ public class UserController {
         return userService.findAllByUserStatus(userStatus);
     }
     @GetMapping("users/{name}")
-    public List<UserDto> findAllByName(@PathVariable String name){
-        return userService.findAllByName(name);
+    public List<UserDto> findByNameLike(@PathVariable String name){
+        return userService.findByNameLike(name);
     }
     @GetMapping("users/id/{id}")
     public UserDto findById(@PathVariable Long id){

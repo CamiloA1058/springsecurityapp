@@ -25,4 +25,19 @@ public class ProductController {
         ProductDto savedProduct = productService.save(product, categoryId);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     };
+    @GetMapping("public/product/{productName}")
+    public ResponseEntity<List<ProductDto>> findByNameLike(@PathVariable String productName){
+        List<ProductDto> products = productService.findByNameLike(productName);
+        return ResponseEntity.ok(products);
+    }
+    @GetMapping("public/product/category/{categoryId}")
+    public ResponseEntity<List<ProductDto>> findByCategory(@PathVariable Long categoryId){
+        List<ProductDto> products = productService.findByCategory(categoryId);
+        return ResponseEntity.ok(products);
+    }
+    @PutMapping("admin/product/update")
+    public ResponseEntity<ProductDto> update(@RequestBody Product product){
+        ProductDto updatedProduct = productService.update(product);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
 }
