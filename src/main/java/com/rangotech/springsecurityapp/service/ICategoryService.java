@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface ICategoryService {
     List<CategoryDto> findAll();
-    CategoryDto save(Category category);
-    Category findById(Long categoryId);
-    CategoryDto update(Long id);
-    void deleteById(Long id);
 
+    CategoryDto save(Category category);
+
+    Category findById(Long categoryId);
+
+    CategoryDto update(Long id);
+
+    void deleteById(Long id);
 }

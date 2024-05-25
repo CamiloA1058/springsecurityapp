@@ -8,13 +8,15 @@ import java.util.List;
 public interface IProductService{
     List<ProductDto> findAll();
 
+    ProductDto save(Product product, Long categoryId);
+
     ProductDto findById(Long id);
+
+    ProductDto update(Product product);
 
     void deleteById(Long id);
 
-    ProductDto save(Product product, Long categoryId);
     List<ProductDto> findByNameLike(String productName);
 
     List<ProductDto> findByCategory(Long categoryId);
-    ProductDto update(Product product);
 }

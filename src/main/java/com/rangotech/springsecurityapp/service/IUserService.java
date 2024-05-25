@@ -8,10 +8,16 @@ import java.util.List;
 
 public interface IUserService {
     List<UserDto> findAll();
+
     User save(User user);
+
     UserDto findById(Long id);
+
     void deleteById(Long id);
+
     List<UserDto> findAllByUserStatus(UserStatus userStatus);
+
     void changeUserStatus(UserStatus userStatus, Long id);
+
     List<UserDto> findByNameLike(String name);
 }

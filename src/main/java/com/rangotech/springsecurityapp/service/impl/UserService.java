@@ -31,7 +31,6 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
-    private final CartRepository cartRepository;
     @Override
     public List<UserDto> findAll() {
        return userRepository.findAll().stream().map(userDtoMapper::map)

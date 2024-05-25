@@ -26,11 +26,7 @@ public class CartService implements ICartService {
     private final CartDtoMapper cartDtoMapper;
 
     @Override
-    public Cart save(Cart cart) {
-        return cartRepository.save(cart);
-    }
-    @Override
-    public CartDto addProductToCart(Long productId, Long cartId, Integer quantity){
+    public CartDto addProductToCart(Long cartId, Long productId,  Integer quantity){
 
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("El producto no se encuentra en nuestra base de datos"));
 
@@ -64,19 +60,40 @@ public class CartService implements ICartService {
 
 
         return cartDtoMapper.map(cart);
-    };
+    }
+
+    @Override
+    public CartDto updateProductQuantityInCart(Long cartId, Long productId, Integer quantity) {
+
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("El carrito no se encuentra registrado en la base de datos"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("El producto no se encuentra registrado en la base de datos"));
+
+        if(product.getQuantity() == 0 ){
+            throw new ApiException("El producto no esta disponible");
+        }
+        if (product.getQuantity() < quantity){
+            throw new ApiException("Porfavor haz una orden menor o igual a la cantidad en stock del producto");
+        }
+
+        CartProduct cartProduct = cartProductRepository
+                .findCartProductByCartIdAndProductId(cartId, productId)
+                .orElseThrow(() -> new ResourceNotFoundException("El producto no se encuentra disponible en el carrito"));
+
+        cart.setTotalPrice(cart.getTotalPrice() - (cartProduct.getProduct().getPrice() * cartProduct.getQuantity())); //Se reasigna el valor anterior al carrito de compras
+
+        product.setQuantity(product.getQuantity() + cartProduct.getQuantity() - quantity); //se reasigna la cantidad en stock del producto
+
+        cartProduct.setQuantity(quantity);
+
+        cart.setTotalPrice(cart.getTotalPrice() + (product.getPrice() * quantity));
+
+        cartProductRepository.save(cartProduct);
 
 
-
-
-
-
-
-
-
-
-
-
+        return cartDtoMapper.map(cart);
+    }
 
 
 
