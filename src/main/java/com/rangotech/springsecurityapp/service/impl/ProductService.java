@@ -3,24 +3,31 @@ package com.rangotech.springsecurityapp.service.impl;
 import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
 import com.rangotech.springsecurityapp.exceptions.ResourceNotFoundException;
 import com.rangotech.springsecurityapp.mapper.ProductDtoMapper;
+import com.rangotech.springsecurityapp.persistence.entity.Cart;
 import com.rangotech.springsecurityapp.persistence.entity.Category;
 import com.rangotech.springsecurityapp.persistence.entity.Product;
+import com.rangotech.springsecurityapp.persistence.repository.CartRepository;
 import com.rangotech.springsecurityapp.persistence.repository.ProductRepository;
+import com.rangotech.springsecurityapp.service.ICartService;
 import com.rangotech.springsecurityapp.service.ICategoryService;
 import com.rangotech.springsecurityapp.service.IProductService;
 import com.rangotech.springsecurityapp.service.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
     private final ProductDtoMapper productDtoMapper;
     private final ICategoryService categoryService;
+    private final ICartService cartService;
 
 
     @Override
@@ -38,7 +45,15 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id) { // Por implementar
+    public void deleteById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El producto no se encuentra en la bd"));
+
+        List<Cart> carts = cartRepository.findCartsByProductId(id);
+
+        carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(), id));
+
+        productRepository.delete(product);
 
     }
 

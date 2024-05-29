@@ -1,11 +1,17 @@
 package com.rangotech.springsecurityapp.service.dto;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record CartDto(
-        Integer cartId,
-        String user,
-        Double totalPrice,
-        List<ProductDto> products
-        ) {
+import java.util.ArrayList;
+import java.util.List;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CartDto{
+        private Long cartId;
+        private String user;
+        private Double totalPrice;
+        private List<ProductDto> products = new ArrayList<>();
 }

@@ -15,6 +15,6 @@ public record UserDto(
         String username,
         UserStatus userStatus,
         LocalDateTime createdDate,
-        CartDto cartDto
+        CartDto cart
         ) {
 }

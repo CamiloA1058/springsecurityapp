@@ -36,4 +36,6 @@ public class Product {
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartProduct> cartProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<OrderProduct> orderItems = new ArrayList<>();
 }

@@ -26,9 +26,13 @@ public class BackendApplication implements CommandLineRunner {
 
 		try {
 
-			Role admin = new Role(101L, "ADMIN");
+			Role admin = new Role();
+			admin.setId(101L);
+			admin.setRole("ADMIN");
 
-			Role user = new Role(102L, "USER");
+			Role user = new Role();
+			user.setId(102L);
+			user.setRole("USER");
 
 			List<Role> roles = new ArrayList<>(List.of(admin, user));
 

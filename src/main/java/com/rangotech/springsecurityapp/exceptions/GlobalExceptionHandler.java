@@ -23,4 +23,9 @@ public class GlobalExceptionHandler {
         ApiResponse apiResponse = new ApiResponse(ex.getMessage(), HttpStatus.CONFLICT);
         return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(ApiException.class)
+    protected ResponseEntity<ApiResponse> myResourceNotFoundException(ApiException ex) {
+        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
 }

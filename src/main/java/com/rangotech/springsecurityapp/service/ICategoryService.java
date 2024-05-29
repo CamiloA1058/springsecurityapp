@@ -12,7 +12,7 @@ public interface ICategoryService {
 
     Category findById(Long categoryId);
 
-    CategoryDto update(Long id);
+    CategoryDto updateCategory(Category category, Long categoryId);
 
-    void deleteById(Long id);
+    String deleteCategory(Long categoryId);
 }

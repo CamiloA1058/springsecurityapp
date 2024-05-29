@@ -2,14 +2,12 @@ package com.rangotech.springsecurityapp.service.impl;
 
 
 import com.rangotech.springsecurityapp.exceptions.ResourceAlreadyExistException;
+import com.rangotech.springsecurityapp.exceptions.ResourceNotFoundException;
 import com.rangotech.springsecurityapp.exceptions.UserNotFoundException;
 import com.rangotech.springsecurityapp.mapper.CartDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserDtoMapper;
 import com.rangotech.springsecurityapp.mapper.UserRegisterMapper;
-import com.rangotech.springsecurityapp.persistence.entity.Cart;
-import com.rangotech.springsecurityapp.persistence.entity.Role;
-import com.rangotech.springsecurityapp.persistence.entity.User;
-import com.rangotech.springsecurityapp.persistence.entity.UserStatus;
+import com.rangotech.springsecurityapp.persistence.entity.*;
 import com.rangotech.springsecurityapp.persistence.repository.CartRepository;
 import com.rangotech.springsecurityapp.persistence.repository.RoleRepository;
 import com.rangotech.springsecurityapp.persistence.repository.UserRepository;
@@ -31,6 +29,7 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
+    private final CartService cartService;
     @Override
     public List<UserDto> findAll() {
        return userRepository.findAll().stream().map(userDtoMapper::map)
@@ -80,7 +79,20 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteById(Long id) {
-        UserDto user = findById(id);
-        userRepository.deleteById(user.id());
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario que desea eliminar no se en cuentrado registrado"));
+
+        List<CartProduct> cartItems = user.getCart().getCartProducts();
+        Long cartId = user.getCart().getCartId();
+
+        cartItems.forEach(cp -> {
+
+            Long productId = cp.getProduct().getProductId();
+
+            cartService.deleteProductFromCart(cartId, productId);
+        });
+
+        userRepository.delete(user);
+
     }
 }

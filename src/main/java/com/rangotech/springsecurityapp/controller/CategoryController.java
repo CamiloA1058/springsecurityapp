@@ -6,10 +6,7 @@ import com.rangotech.springsecurityapp.service.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -22,5 +19,19 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> save(@RequestBody Category category){
         CategoryDto savedCategory = categoryService.save(category);
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
+    }
+    @PutMapping("/admin/categories/{categoryId}")
+    public ResponseEntity<CategoryDto> updateCategory(@RequestBody Category category,
+                                                      @PathVariable Long categoryId) {
+        CategoryDto categoryDTO = categoryService.updateCategory(category, categoryId);
+
+        return new ResponseEntity<CategoryDto>(categoryDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/categories/{categoryId}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
+        String status = categoryService.deleteCategory(categoryId);
+
+        return new ResponseEntity<String>(status, HttpStatus.OK);
     }
 }

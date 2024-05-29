@@ -5,23 +5,29 @@ import com.rangotech.springsecurityapp.service.impl.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    @PostMapping("public/cart/{productId}/{cartId}/{quantity}")
+    @PostMapping("public/carts/{cartId}/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDto> addProductToCart(
-            @PathVariable Long productId,
             @PathVariable Long cartId,
+            @PathVariable Long productId,
             @PathVariable Integer quantity
     ){
-        CartDto cartDto = cartService.addProductToCart(productId,cartId,quantity);
+        CartDto cartDto = cartService.addProductToCart(cartId,productId,quantity);
+        return new ResponseEntity<>(cartDto, HttpStatus.OK);
+    }
+    @PutMapping("public/carts/{cartId}/products/{productId}/quantity/{quantity}")
+    public ResponseEntity<CartDto> updateProductQuantityInCart(
+            @PathVariable Long cartId,
+            @PathVariable Long productId,
+            @PathVariable Integer quantity
+    ){
+        CartDto cartDto = cartService.updateProductQuantityInCart(cartId,productId,quantity);
         return new ResponseEntity<>(cartDto, HttpStatus.OK);
     }
 }
