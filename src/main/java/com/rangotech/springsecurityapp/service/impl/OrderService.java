@@ -30,7 +30,7 @@ public class OrderService implements IOrderService {
     private final OrderProductRepository orderProductRepository;
     private final ICartService cartService;
     private final OrderDtoMapper orderDtoMapper;
-    private final OrderProductDtoMapper orderProductDtoMapper;
+
 
     @Override
     public OrderDto placeOrder(String usernameId, Long cartId, String paymentMethod) {
