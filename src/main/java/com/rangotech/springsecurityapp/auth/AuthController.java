@@ -5,10 +5,7 @@ import com.rangotech.springsecurityapp.service.dto.UserRegisterDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,9 +17,10 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginCredentials user){
         return ResponseEntity.ok(authService.login(user));
-    }
+}
     @PostMapping("register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegisterDto user){
+        System.out.println(user);
         return ResponseEntity.ok(authService.register(user));
     }
 }

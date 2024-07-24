@@ -43,6 +43,8 @@ public class UserService implements IUserService {
     }
     @Override
     public User save(User user){
+
+
         if (userRepository.findByUsername(user.getUsername()).isPresent()){
             throw new ResourceAlreadyExistException("El usuario ya se encuentra registrado");
         };
